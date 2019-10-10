@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     bgStyle() {
-      return `background-image:url(${this.bgImage.replace('150x150', '300x300')})`
+      return `background-image:url(${this.bgImage.replace('150x150', '300x300').replace('webp', 'jpg')})`
     }
   },
   mounted() {

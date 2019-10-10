@@ -16,7 +16,7 @@
           <ul class="disc-list">
             <li v-for="(item, index) of discList" :key="index" class="disc-list-item">
               <div class="icon">
-                <img v-lazy="item.cover" alt="">
+                <img v-lazy="item.cover" class="needsclick" alt="">
               </div>
               <div class="text">
                 <h2 class="text-title">{{item.title}}</h2>
@@ -112,6 +112,7 @@ export default {
           flex: 0 0 60px
           width: 60px
           padding-right: 20px
+          overflow: hidden
         .text
           display: flex
           flex-direction: column

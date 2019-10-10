@@ -5,7 +5,7 @@
       <div>
         <ul class="singer-list">
           <li class="singer-item" @click="selectSinger(item)" v-for="item of singers" :key="item.singer_id">
-            <img v-lazy="item.singer_pic.replace('http', 'https')" alt="" class="singer-avatar">
+            <img v-lazy="item.singer_pic.replace('webp','jpg')" alt="" class="singer-avatar needsclick">
             <p class="singer-name">{{item.singer_name}}</p>
           </li>
         </ul>

@@ -2,9 +2,9 @@
   <div class="song-list">
     <ul>
       <li class="item" v-for="song of songs" :key="song.id">
-        <div class="rank">
+        <!-- <div class="rank">
           <span></span>
-        </div>
+        </div> -->
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>

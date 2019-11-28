@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li class="item" v-for="song of songs" :key="song.id">
+      <li class="item" @click="selectItem(song, index)" v-for="(song, index) of songs" :key="song.id">
         <!-- <div class="rank">
           <span></span>
         </div> -->
@@ -23,6 +23,9 @@ export default {
     }
   },
   methods: {
+    selectItem(item, index) {
+      this.$emit('select', item, index)
+    },
     getDesc(song) {
       return `${song.singer} . ${song.album}`
     }
@@ -55,15 +58,15 @@ export default {
         background-size: 25px 24px;
 
         &.icon0 {
-          bg-image('first');
+          bg-image('./images/first');
         }
 
         &.icon1 {
-          bg-image('second');
+          bg-image('./images/second');
         }
 
         &.icon2 {
-          bg-image('third');
+          bg-image('./images/third');
         }
       }
 

@@ -36,13 +36,13 @@
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
+            <div class="icon i-left" @click="prevSong">
               <i class="icon-prev"></i>
             </div>
             <div class="icon i-center">
               <i class="icon-play"></i>
             </div>
-            <div class="icon i-right">
+            <div class="icon i-right" @click="nextSong">
               <i class="icon-next"></i>
             </div>
             <div class="icon i-right">
@@ -84,9 +84,6 @@ export default {
 
     }
   },
-  mounted() {
-    console.log(this.currentSong)
-  },
   methods: {
     // 关闭正常播放器 显示迷你播放器
     back() {
@@ -95,6 +92,26 @@ export default {
     // 显示正常播放器 关闭迷你播放器
     open() {
       this.setFullScreen(true)
+    },
+        // 上一曲
+    prevSong() {
+      let playListLength = this.playList.length
+      let currentIndex = this.currentIndex
+      if (currentIndex === 0) {
+        this.setCurrentIndex(playListLength - 1)
+      } else {
+        this.setCurrentIndex(currentIndex - 1)
+      }
+    },
+    // 下一曲
+    nextSong() {
+      let playListLength = this.playList.length
+      let currentIndex = this.currentIndex
+      if (currentIndex === playListLength - 1) {
+        this.setCurrentIndex(0)
+      } else {
+        this.setCurrentIndex(currentIndex + 1)
+      }
     },
     enter(el, done) {
       const {x, y, scale} = this._getPosAndScale()
@@ -151,11 +168,12 @@ export default {
       }
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setCurrentIndex: 'SET_CURRENT_INDEX'
     })
   },
   computed: {
-    ...mapGetters(['fullScreen', 'playList', 'currentSong'])
+    ...mapGetters(['fullScreen', 'playList', 'currentSong', 'currentIndex'])
   }
 }
 </script>

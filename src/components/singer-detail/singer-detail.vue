@@ -39,12 +39,10 @@ export default {
       getSingerDetail(this.singer.singer_mid).then(res => {
         if (res.data.code === ERR_OK) {
           this.songs = this._normallizeSongs(res.data.singer.data.songlist)
-          console.log(this.songs)
         }
       })
     },
     _normallizeSongs(list) {
-      console.log(list)
       let ret = []
       list.forEach((element) => {
         let musicData = element
@@ -64,21 +62,17 @@ export default {
 <style scoped lang="stylus" rel="stylesheet/stylus">
 @import '~common/stylus/variable';
 
-.singer-detail {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $color-background;
-}
-
-.slide-enter-active, .slide-leave-active {
-  transition: all 0.3s;
-}
-
-.slide-enter, .slide-leave-to {
-  transform: translate3d(100%, 0, 0);
-}
+// .singer-detail
+//   position: fixed
+//   z-index: 100
+//   top: 0
+//   left: 0
+//   right: 0
+//   bottom: 0
+//   background: $color-background
+.slide-enter-active, .slide-leave-active
+  transition all 0.3s
+.slide-enter, .slide-leave-to
+  opacity 0
+  transform translateX(100%) // 100% 完全移动到屏幕右侧 动画开始向左滑入
 </style>

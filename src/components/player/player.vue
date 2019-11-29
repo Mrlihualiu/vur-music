@@ -93,7 +93,7 @@ export default {
     open() {
       this.setFullScreen(true)
     },
-        // 上一曲
+    // 上一曲
     prevSong() {
       let playListLength = this.playList.length
       let currentIndex = this.currentIndex

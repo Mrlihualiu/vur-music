@@ -24,7 +24,7 @@
         <div class="middle">
           <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
-              <div class="cd">
+              <div class="cd" :class="cdClass">
                 <img :src="currentSong.image" class="image">
               </div>
             </div>
@@ -40,7 +40,7 @@
               <i class="icon-prev"></i>
             </div>
             <div class="icon i-center">
-              <i class="icon-play"></i>
+              <i @click="togglePlaying" :class="playIcon"></i>
             </div>
             <div class="icon i-right" @click="nextSong">
               <i class="icon-next"></i>
@@ -56,18 +56,21 @@
       <!-- 迷你播放器 -->
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon">
-          <img :src="currentSong.image" width="40" height="40">
+          <img :class="cdClass" :src="currentSong.image" width="40" height="40">
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
           <p class="desc"  v-html="currentSong.singer"></p>
         </div>
-        <div class="control"></div>
+        <div class="control">
+          <i @click.stop="togglePlaying" :class="miniPlayIcon"></i>
+        </div>
         <div class="control">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <audio ref="audio" :src="currentSong.url"></audio>
   </div>
 </template>
 
@@ -79,10 +82,17 @@ import { prefixStyle } from 'common/js/dom'
 const transform = prefixStyle('transform')
 
 export default {
-  data() {
-    return {
-
-    }
+  computed: {
+    cdClass() {
+      return this.playing ? 'play' : 'pause'
+    },
+    playIcon() {
+      return this.playing ? 'icon-pause' : 'icon-play'
+    },
+    miniPlayIcon() {
+      return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+    },
+    ...mapGetters(['fullScreen', 'playList', 'currentSong', 'currentIndex', 'playing'])
   },
   methods: {
     // 关闭正常播放器 显示迷你播放器
@@ -112,6 +122,10 @@ export default {
       } else {
         this.setCurrentIndex(currentIndex + 1)
       }
+    },
+    // 播放|暂停
+    togglePlaying() {
+      this.setPlayingState(!this.playing)
     },
     enter(el, done) {
       const {x, y, scale} = this._getPosAndScale()
@@ -169,11 +183,22 @@ export default {
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayingState: 'SET_PLAYING_STATE'
     })
   },
-  computed: {
-    ...mapGetters(['fullScreen', 'playList', 'currentSong', 'currentIndex'])
+  watch: {
+    currentSong() {
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    },
+    playing(newPlaying) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
+      })
+    }
   }
 }
 </script>
@@ -255,6 +280,7 @@ export default {
               border-radius: 50%
               &.play
                 animation: rotate 20s linear infinite
+                animation-play-state: running
               &.pause
                 animation-play-state: paused
               .image
@@ -382,6 +408,7 @@ export default {
           border-radius: 50%
           &.play
             animation: rotate 10s linear infinite
+            animation-play-state: running
           &.pause
             animation-play-state: paused
       .text

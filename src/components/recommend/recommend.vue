@@ -5,9 +5,7 @@
         <div v-if="recommends.length" class="slider-wrapper">
           <slider>
             <div v-for="(item, index) of recommends" :key="index">
-              <a :href="item.linkUrl">
-                <img :src="item.picUrl" @load="loadImage" class="needsclick">
-              </a>
+              <img :src="item.pic_info.url" @load="loadImage" class="needsclick">
             </div>
           </slider>
         </div>
@@ -36,7 +34,7 @@
 <script>
 import Slider from 'base/slider/slider'
 import { getRecommend, getDiscList } from 'api/recommend'
-import { ERR_OK } from 'api/config'
+import { ERR_OK, STATUS_OK } from 'api/config'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 
@@ -54,8 +52,8 @@ export default {
   methods: {
     _getRecmmend() {
       getRecommend().then((res) => {
-        if (res.code === ERR_OK) {
-          this.recommends = res.data.slider
+        if (res.status === STATUS_OK) {
+          this.recommends = res.data.focus.data.content
         }
       })
     },

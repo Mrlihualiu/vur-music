@@ -1,17 +1,29 @@
-import jsonp from 'common/js/jsonp'
-import { commonParams, options } from './config'
+import { commonParams } from './config'
 import Axios from 'axios'
 
 // 获取首页banner
 export function getRecommend() {
-  const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-  const data = Object.assign({}, commonParams, {
-    platform: 'h5',
+  const url = './apiGetDiscList'
+  const params = Object.assign({}, commonParams, {
+    '-': 'recom6605412364378349',
+    platform: 'yqq.json',
     uin: 0,
-    needNewCode: 1
+    loginUin: 0,
+    hostUin: 0,
+    format: 'json',
+    needNewCode: 0,
+    data: {
+      comm: { ct: 24 },
+      focus: {
+        module: 'QQMusic.MusichallServer',
+        method: 'GetFocus',
+        param: {}
+      }
+    }
   })
-
-  return jsonp(url, data, options)
+  return Axios.get(url, { params }, (res) => {
+    return Promise.resolve(res.data)
+  })
 }
 export function getDiscList() {
   const url = './apiGetDiscList'

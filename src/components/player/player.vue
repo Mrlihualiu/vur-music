@@ -1,10 +1,11 @@
 <template>
   <div class="player" v-show="playList.length > 0">
-    <transition name="normal"
-                @enter="enter"
-                @after-enter="afterEnter"
-                @leave="leave"
-                @after-leave="afterLeave"
+    <transition
+      name="normal"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @leave="leave"
+      @after-leave="afterLeave"
     >
       <!-- 正常播放器 -->
       <div class="normal-player" v-show="fullScreen">
@@ -92,7 +93,13 @@ export default {
     miniPlayIcon() {
       return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
     },
-    ...mapGetters(['fullScreen', 'playList', 'currentSong', 'currentIndex', 'playing'])
+    ...mapGetters([
+      'fullScreen',
+      'playList',
+      'currentSong',
+      'currentIndex',
+      'playing'
+    ])
   },
   methods: {
     // 关闭正常播放器 显示迷你播放器

@@ -21,8 +21,8 @@ export default class Song {
 }
 
 export function createSong(musicData) {
-  const guid = '1057182160'
-  const vkey = '1C410A3767F3242DE49D599F39323C1C23E1B7E67A36F0F4C09DDB42ABBDB67564A9D9B60D88587EF1B08193DC2031DA5BE91E4CF16A4583'
+  const guid = '5857670894'
+  const vkey = 'EB24E110902ECD08FBAF3EA42827E8E9F819785F16D66DF12B60BD36AFEC24D26689608E0D6528A7266E2700FEBED8352942B325D9271871'
   const uin = '3280'
   return new Song({
     id: musicData.id,
@@ -32,7 +32,7 @@ export function createSong(musicData) {
     album: musicData.album.name,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`,
-    url: `http://isure.stream.qqmusic.qq.com/C400${musicData.file.media_mid}.m4a?guid=${guid}&vkey=${vkey}&uin=${uin}&fromtag=66`
+    url: `http://ws.stream.qqmusic.qq.com/C100${musicData.file.media_mid}.m4a?guid=${guid}&vkey=${vkey}&uin=${uin}&fromtag=38`
   })
 }
 

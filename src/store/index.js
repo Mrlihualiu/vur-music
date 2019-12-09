@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+
 import * as actions from './actions'
 import * as getters from './getters'
 import state from './state'
 import mutations from './mutations'
+
+// Vuex 内置日志插件用于一般调试
 import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)

@@ -75,7 +75,7 @@ export function savePlay(song) {
     return item.id === song.id
   }, PLAY_MAX_LENGTH)
 
-  Storage.set(PLAY_KEY, songs)
+  storage.set(PLAY_KEY, songs)
   return songs
 }
 

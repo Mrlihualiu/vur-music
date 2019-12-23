@@ -45,7 +45,6 @@ export default {
     _normallizeSongs(list) {
       let ret = []
       list.forEach((element) => {
-        console.log(element)
         let musicData = element
         if (musicData.id && musicData.album && musicData.album.mid) {
           getMusic(musicData.mid).then((res) => {

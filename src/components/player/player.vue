@@ -33,6 +33,18 @@
         </div>
         <!-- 底部歌曲操作按钮区域 -->
         <div class="bottom">
+          <!-- 歌曲时间进度条 -->
+          <div class="progress-wrapper">
+            <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="progress-bar-wrapper">
+              <progress-bar
+                :percent="percent"
+              >
+              </progress-bar>
+            </div>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
+          </div>
+          <!-- 歌曲操作按钮区 -->
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
@@ -71,7 +83,13 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @ended="end"></audio>
+    <audio ref="audio"
+      :src="currentSong.url"
+      @play="ready"
+      @error="error"
+      @ended="end"
+      @timeupdate="updateTime"
+    ></audio>
   </div>
 </template>
 
@@ -80,6 +98,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import { playMode } from 'common/js/config'
+import ProgressBar from 'base/progress-bar/progress-bar'
 
 const transform = prefixStyle('transform')
 
@@ -163,7 +182,7 @@ export default {
         return
       } else {
         let index = this.currentIndex + 1
-        if (index === this.playlist.length) {
+        if (index === this.playList.length) {
           index = 0
         }
         this.setCurrentIndex(index)
@@ -175,7 +194,6 @@ export default {
     },
     // 播放|暂停
     togglePlaying() {
-      console.log(this.songReady)
       if (!this.songReady) { return }
       this.setPlayingState(!this.playing)
       if (this.currentLyric) {
@@ -195,6 +213,26 @@ export default {
     },
     error() {
       this.songReady = true
+    },
+    updateTime(e) {
+      this.currentTime = e.target.currentTime
+    },
+    // 歌曲播放时间戳转化
+    format(interval) {
+      interval = interval | 0
+      const minute = interval / 60 | 0
+      const second = this._pad(interval % 60)
+      // minute = minute < 10 ? `0${minute}` : minute
+      // second = second < 10 ? `0${second}` : second
+      return `${minute}:${second}`
+    },
+    _pad(num, n = 2) {
+      let len = num.toString().length
+      while (len < n) {
+        num = `0${num}`
+        len++
+      }
+      return num
     },
     enter(el, done) {
       const {x, y, scale} = this._getPosAndScale()
@@ -271,6 +309,9 @@ export default {
         newPlaying ? audio.play() : audio.pause()
       })
     }
+  },
+  components: {
+    ProgressBar
   }
 }
 </script>

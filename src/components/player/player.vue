@@ -71,14 +71,15 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url"></audio>
+    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @ended="end"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
+import { playMode } from 'common/js/config'
 
 const transform = prefixStyle('transform')
 
@@ -174,6 +175,7 @@ export default {
     },
     // 播放|暂停
     togglePlaying() {
+      console.log(this.songReady)
       if (!this.songReady) { return }
       this.setPlayingState(!this.playing)
       if (this.currentLyric) {
@@ -252,7 +254,10 @@ export default {
       setFullScreen: 'SET_FULL_SCREEN',
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setPlayingState: 'SET_PLAYING_STATE'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong() {

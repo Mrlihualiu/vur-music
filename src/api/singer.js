@@ -73,3 +73,22 @@ export function getSingerDetail(singermid = '0025NhlN2yWrP4') {
     return Promise.resolve(res.data)
   })
 }
+
+export function getMusic(songmid) {
+  const url = './apiGetVkey'
+  const params = Object.assign({}, commonParams, {
+    songmid,
+    filename: 'C400' + songmid + '.m4a',
+    guid: 6319873028, // 会变，以实时抓取数据为准
+    platform: 'yqq',
+    loginUin: 0,
+    hostUin: 0,
+    needNewCode: 0,
+    cid: 205361747,
+    uin: 0,
+    format: 'json'
+  })
+  return Axios.get(url, { params }, (res) => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -2,8 +2,8 @@
  * mixin: 一个对象，Vue的混合机制，提高组件内容的复用性
  */
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { playMode } from '@/common/js/config'
-import { shuffle } from '@/common/js/util'
+import { playMode } from 'common/js/config'
+import { shuffle } from 'common/js/util'
 
 export const playlistMixin = {
   computed: {

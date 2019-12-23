@@ -5,7 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getSingerDetail } from 'api/singer'
+import { getSingerDetail, getMusic } from 'api/singer'
 import { ERR_OK } from 'api/config'
 import { mapGetters } from 'vuex'
 import { createSong } from 'common/js/song'
@@ -45,9 +45,17 @@ export default {
     _normallizeSongs(list) {
       let ret = []
       list.forEach((element) => {
+        console.log(element)
         let musicData = element
         if (musicData.id && musicData.album && musicData.album.mid) {
-          ret.push(createSong(musicData))
+          getMusic(musicData.mid).then((res) => {
+            if (res.data.code === ERR_OK) {
+              const svkey = res.data.data.items
+              const vkey = svkey[0].vkey
+              const newSong = createSong(musicData, vkey)
+              ret.push(newSong)
+            }
+          })
         }
       })
       return ret

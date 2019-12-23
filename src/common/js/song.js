@@ -1,5 +1,5 @@
-import { getLyric } from '@/api/song'
-import { ERR_OK } from '@/api/config'
+import { getLyric } from 'api/song'
+import { ERR_OK } from 'api/config'
 import { Base64 } from 'js-base64'
 
 export default class Song {
@@ -41,10 +41,9 @@ export default class Song {
 }
 
 // 抽象出一个工厂方法：传入musicData对象参数，实例化一个Song
-export function createSong(musicData) {
-  const guid = '5857670894'
-  const vkey = 'EB24E110902ECD08FBAF3EA42827E8E9F819785F16D66DF12B60BD36AFEC24D26689608E0D6528A7266E2700FEBED8352942B325D9271871'
-  const uin = '3280'
+export function createSong(musicData, vkey) {
+  const guid = '6319873028'
+  const uin = '0'
   return new Song({
     id: musicData.id,
     mid: musicData.mid,
@@ -53,7 +52,7 @@ export function createSong(musicData) {
     album: musicData.album.name,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`,
-    url: `http://ws.stream.qqmusic.qq.com/C100${musicData.file.media_mid}.m4a?guid=${guid}&vkey=${vkey}&uin=${uin}&fromtag=38`
+    url: `http://ws.stream.qqmusic.qq.com/C400${musicData.mid}.m4a?vkey=${vkey}&guid=${guid}&uin=${uin}&fromtag=66`
   })
 }
 

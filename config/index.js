@@ -29,6 +29,13 @@ module.exports = {
         pathRewrite: {'^/lyric' : ''},
         changeOrigin: true,     // target是域名的话，需要这个参数，
         secure: false,          // 设置支持https协议的代理
+      },
+      // 获取vkey
+      '/apiGetVkey': {
+        target: 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',
+        pathRewrite: {'^/apiGetVkey' : ''},
+        changeOrigin: true,     // target是域名的话，需要这个参数，
+        secure: false,          // 设置支持https协议的代理
       }
     },
 

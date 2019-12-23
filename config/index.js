@@ -22,6 +22,13 @@ module.exports = {
         pathRewrite: {'^/apiGetDiscDetail' : ''},
         changeOrigin: true,     // target是域名的话，需要这个参数，
         secure: false,          // 设置支持https协议的代理
+      },
+      // 获取歌曲地址
+      '/lyric': {
+        target: 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_yqq.fcg',
+        pathRewrite: {'^/lyric' : ''},
+        changeOrigin: true,     // target是域名的话，需要这个参数，
+        secure: false,          // 设置支持https协议的代理
       }
     },
 

@@ -1,3 +1,7 @@
+import { getLyric } from '@/api/song'
+import { ERR_OK } from '@/api/config'
+import { Base64 } from 'js-base64'
+
 export default class Song {
   constructor({
     id,
@@ -18,8 +22,25 @@ export default class Song {
     this.image = image
     this.url = url
   }
+
+  getLyric() {
+    if (this.lyric) {
+      return Promise.resolve()
+    }
+    return new Promise((resolve, reject) => {
+      getLyric(this.mid).then((res) => {
+        if (res.retcode === ERR_OK) {
+          this.lyric = Base64.decode(res.lyric) // 解码 得到字符串
+          resolve(this.lyric)
+        } else {
+          reject(new Error('no lyric'))
+        }
+      })
+    })
+  }
 }
 
+// 抽象出一个工厂方法：传入musicData对象参数，实例化一个Song
 export function createSong(musicData) {
   const guid = '5857670894'
   const vkey = 'EB24E110902ECD08FBAF3EA42827E8E9F819785F16D66DF12B60BD36AFEC24D26689608E0D6528A7266E2700FEBED8352942B325D9271871'
@@ -36,7 +57,8 @@ export function createSong(musicData) {
   })
 }
 
-function filterSinger(singer) {
+// 格式化处理singer数据
+export function filterSinger(singer) {
   let ret = []
   if (!singer) {
     return ''

@@ -83,6 +83,17 @@ import { prefixStyle } from 'common/js/dom'
 const transform = prefixStyle('transform')
 
 export default {
+  data() {
+    return {
+      songReady: false,
+      currentTime: 0,
+      radius: 32,
+      currentLyric: null,
+      currentLineNum: 0,
+      currentShow: 'cd',
+      playingLyric: ''
+    }
+  },
   computed: {
     cdClass() {
       return this.playing ? 'play' : 'pause'
@@ -92,6 +103,12 @@ export default {
     },
     miniPlayIcon() {
       return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+    },
+    disableCls() {
+      return this.songReady ? '' : 'disable'
+    },
+    percent() {
+      return this.currentTime / this.currentSong.duration
     },
     ...mapGetters([
       'fullScreen',
@@ -110,29 +127,72 @@ export default {
     open() {
       this.setFullScreen(true)
     },
+    end() {
+      if (this.mode === playMode.loop) {
+        this.loopSong()
+      } else {
+        this.nextSong()
+      }
+    },
     // 上一曲
     prevSong() {
+      if (!this.songReady) { return }
       let playListLength = this.playList.length
       let currentIndex = this.currentIndex
-      if (currentIndex === 0) {
-        this.setCurrentIndex(playListLength - 1)
+      if (playListLength === 1) {
+        this.loop()
+        return
       } else {
-        this.setCurrentIndex(currentIndex - 1)
+        let index = currentIndex - 1
+        if (index === -1) {
+          index = playListLength - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
       }
+      this.songReady = false
     },
     // 下一曲
     nextSong() {
-      let playListLength = this.playList.length
-      let currentIndex = this.currentIndex
-      if (currentIndex === playListLength - 1) {
-        this.setCurrentIndex(0)
+      if (!this.songReady) { return }
+      if (this.playList.length === 1) { // 只有一首歌，单曲循环
+        this.loop()
+        return
       } else {
-        this.setCurrentIndex(currentIndex + 1)
+        let index = this.currentIndex + 1
+        if (index === this.playlist.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
       }
+      this.songReady = false
     },
     // 播放|暂停
     togglePlaying() {
+      if (!this.songReady) { return }
       this.setPlayingState(!this.playing)
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay() // 歌词切换播放暂停
+      }
+    },
+    loopSong() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+      if (this.currentLyric) {
+        this.currentLyric.seek(0) // 歌词偏移到一开始
+      }
+    },
+    ready() {
+      this.songReady = true
+      this.savePlayHistory(this.currentSong)
+    },
+    error() {
+      this.songReady = true
     },
     enter(el, done) {
       const {x, y, scale} = this._getPosAndScale()

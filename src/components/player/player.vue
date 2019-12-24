@@ -39,6 +39,7 @@
             <div class="progress-bar-wrapper">
               <progress-bar
                 :percent="percent"
+                @percentChange="onProgressBarChange"
               >
               </progress-bar>
             </div>
@@ -98,6 +99,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import { playMode } from 'common/js/config'
+import Lyric from 'lyric-parser'
 import ProgressBar from 'base/progress-bar/progress-bar'
 
 const transform = prefixStyle('transform')
@@ -214,6 +216,35 @@ export default {
     error() {
       this.songReady = true
     },
+    // 播放进度条拖动改变
+    onProgressBarChange(percent) {
+      const currentTime = this.currentSong.duration * percent
+      this.$refs.audio.currentTime = currentTime
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      if (this.currentLyric) {
+        this.currentLyric.seek(currentTime * 1000) // 偏移歌词到拖动时间的对应位置
+      }
+    },
+    // 获取歌词并解析
+    getLyric() {
+      this.currentSong.getLyric().then((lyric) => {
+        if (this.currentSong.lyric !== lyric) {
+          return
+        }
+        // 实例化lyric对象
+        this.currentLyric = new Lyric(lyric, this.handleLyric)
+        if (this.playing) {
+          this.currentLyric.play()
+        }
+      }).catch(() => {
+        // 请求失败，清理数据
+        this.currentLyric = null
+        this.playingLyric = ''
+        this.currentLineNum = 0
+      })
+    },
     updateTime(e) {
       this.currentTime = e.target.currentTime
     },
@@ -298,10 +329,24 @@ export default {
     ])
   },
   watch: {
-    currentSong() {
-      this.$nextTick(() => {
+    currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return
+      }
+      if (newSong.id === oldSong.id) {
+        return
+      }
+      if (this.currentLyric) {
+        this.currentLyric.stop() // 切换歌曲后，清空前一首歌歌词Lyric实例中的定时器
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
+      }
+      // 确保DOM已存在 不使用this.nextTick,保证手机微信中从后台切回前台时歌曲重新播放
+      setTimeout(() => {
         this.$refs.audio.play()
-      })
+        this.getLyric()
+      }, 1000)
     },
     playing(newPlaying) {
       const audio = this.$refs.audio

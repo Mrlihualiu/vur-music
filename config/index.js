@@ -3,7 +3,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-const baseUrl = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
 
 module.exports = {
   dev: {
@@ -12,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apiGetDiscList': {
-        target: baseUrl,
+        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
         pathRewrite: {'^/apiGetDiscList' : ''},
         changeOrigin: true,     // target是域名的话，需要这个参数，
         secure: false,          // 设置支持https协议的代理
@@ -23,8 +22,9 @@ module.exports = {
         changeOrigin: true,     // target是域名的话，需要这个参数，
         secure: false,          // 设置支持https协议的代理
       },
-      // 获取歌曲地址
+      // 获取歌词地址
       '/lyric': {
+        // target: 'https://szc.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg',
         target: 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_yqq.fcg',
         pathRewrite: {'^/lyric' : ''},
         changeOrigin: true,     // target是域名的话，需要这个参数，

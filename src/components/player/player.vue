@@ -77,13 +77,16 @@
           <p class="desc"  v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i @click.stop="togglePlaying" :class="miniPlayIcon"></i>
+          <progress-circle :radius="radius" :percent="percent">
+            <i @click.stop.prevent="togglePlaying" :class="miniPlayIcon" class="icon-mini"></i>
+          </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop.prevent="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <play-list ref="playlist"></play-list>
     <audio ref="audio"
       :src="currentSong.url"
       @play="ready"
@@ -101,6 +104,8 @@ import { prefixStyle } from 'common/js/dom'
 import { playMode } from 'common/js/config'
 import Lyric from 'lyric-parser'
 import ProgressBar from 'base/progress-bar/progress-bar'
+import ProgressCircle from 'base/progress-circle/progress-circle'
+import PlayList from 'components/play-list/play-list'
 
 const transform = prefixStyle('transform')
 
@@ -304,6 +309,10 @@ export default {
       this.$refs.cdWrapper.style.transition = ''
       this.$refs.cdWrapper.style[transform] = ''
     },
+    // 控制播放列表
+    showPlayList() {
+      this.$refs.playlist.show()
+    },
     _getPosAndScale() {
       const targerWidth = 40
       const paddingLeft = 40
@@ -356,7 +365,9 @@ export default {
     }
   },
   components: {
-    ProgressBar
+    ProgressBar,
+    ProgressCircle,
+    PlayList
   }
 }
 </script>

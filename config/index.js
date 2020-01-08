@@ -36,7 +36,14 @@ module.exports = {
         pathRewrite: {'^/apiGetVkey' : ''},
         changeOrigin: true,     // target是域名的话，需要这个参数，
         secure: false,          // 设置支持https协议的代理
-      }
+      },
+      // 搜索
+      '/apiGetSearch': {
+        target: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp',
+        pathRewrite: {'^/apiGetSearch' : ''},
+        changeOrigin: true,     // target是域名的话，需要这个参数，
+        secure: false,          // 设置支持https协议的代理
+      },
     },
 
     // Various Dev Server settings

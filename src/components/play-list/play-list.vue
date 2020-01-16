@@ -13,11 +13,11 @@
           <transition-group name="list" tag="ul">
             <li class="item" @click="selectItem(item, index)"
               v-for="(item, index) of sequenceList"
-              :key="index" ref="listItem"
+              :key="item.id" ref="listItem"
             >
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
-              <span class="like">
+              <span class="like" @click.stop="toggleFavorite(item)">
                 <i :class="getFavoriteIcon(item)"></i>
               </span>
               <span class="delete" @click.stop="deleteOne(item)">
@@ -102,6 +102,7 @@ export default {
       const index = this.sequenceList.findIndex((song) => {
         return current.id === song.id
       })
+      console.log(this.$refs.listContent)
       this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
     },
     deleteOne(item) {

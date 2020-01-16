@@ -1,8 +1,8 @@
 <template>
   <scroll class="suggest">
     <ul class="suggest-list">
-      <li class="suggest-item">
-        <div class="icon" @click="selectItem(item)" v-for="(item, index) of result" :key="index">
+      <li class="suggest-item" @click="selectItem(item)" v-for="(item, index) of result" :key="index">
+        <div class="icon">
           <i :class="getIcons(item)"></i>
         </div>
         <div class="name">
@@ -26,7 +26,7 @@ import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import Singer from 'common/js/singer'
 import { mapMutations, mapActions } from 'vuex'
-import NoResult from 'base/no-reult/no-reult'
+import NoResult from 'base/no-result/no-result'
 
 const TYPE_SINGER = 'singer'
 const perpage = 20 // 抓取数据一页多少条
@@ -176,8 +176,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import 'common/stylus/variable'
-@import 'common/stylus/mixin'
+@import '~common/stylus/variable'
+@import '~common/stylus/mixin'
 
 .suggest
   height: 100%

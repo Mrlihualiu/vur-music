@@ -47,7 +47,7 @@ export function saveSearch(query) {
   return searches
 }
 
-export function delateSearch(query) {
+export function deleteSearch(query) {
   let searches = storage.get(SEARCH_KEY, [])
 
   deleteFromArray(searches, (item) => {

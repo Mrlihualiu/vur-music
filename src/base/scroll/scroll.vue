@@ -26,10 +26,12 @@ export default {
       type: Array,
       default: null
     },
+    // 上拉刷新
     pullup: {
       type: Boolean,
       default: false
     },
+    // 是否派发beforeScroll事件
     beforeScroll: {
       type: Boolean,
       default: false

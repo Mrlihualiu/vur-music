@@ -44,7 +44,7 @@ export default {
     },
     cancel() {
       this.hide()
-      this.emit('cancel')
+      this.$emit('cancel')
     },
     confirm() {
       this.hide()

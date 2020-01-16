@@ -47,17 +47,17 @@
           </div>
           <!-- 歌曲操作按钮区 -->
           <div class="operators">
-            <div class="icon i-left">
+            <div class="icon i-left" @click="changeMode">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left" @click="prevSong">
-              <i class="icon-prev"></i>
+            <div class="icon i-left" :class="disableCls">
+              <i class="icon-prev" @click="prevSong"></i>
             </div>
-            <div class="icon i-center">
+            <div class="icon i-center" :class="disableCls">
               <i @click="togglePlaying" :class="playIcon"></i>
             </div>
-            <div class="icon i-right" @click="nextSong">
-              <i class="icon-next"></i>
+            <div class="icon i-right" :class="disableCls">
+              <i class="icon-next" @click="nextSong"></i>
             </div>
             <div class="icon i-right">
               <i class="icon-not-favorite"></i>
@@ -106,10 +106,13 @@ import Lyric from 'lyric-parser'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
 import PlayList from 'components/play-list/play-list'
+import { playerMixin } from 'common/js/mixin'
 
 const transform = prefixStyle('transform')
+// const transitionDuration = prefixStyle('transition-duration')
 
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       songReady: false,
@@ -310,7 +313,7 @@ export default {
       this.$refs.cdWrapper.style[transform] = ''
     },
     // 控制播放列表
-    showPlayList() {
+    showPlaylist() {
       this.$refs.playlist.show()
     },
     _getPosAndScale() {

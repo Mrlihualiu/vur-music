@@ -5,6 +5,7 @@ import Singer from 'components/singer/singer'
 import Search from 'components/search/search'
 import Rank from 'components/rank/rank'
 import SingerDetail from 'components/singer-detail/singer-detail'
+import TopList from 'components/top-list/top-list'
 
 Vue.use(Router)
 
@@ -34,7 +35,13 @@ export default new Router({
     }, {
       path: '/rank',
       name: 'Rank',
-      component: Rank
+      component: Rank,
+      children: [
+        {
+          path: ':id',
+          component: TopList
+        }
+      ]
     }
   ]
 })

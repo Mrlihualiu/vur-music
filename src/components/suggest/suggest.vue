@@ -1,5 +1,12 @@
 <template>
-  <scroll class="suggest">
+  <scroll class="suggest"
+    :data="result"
+    :pullup="pullup"
+    :beforeScroll="beforeScroll"
+    @beforeScroll="listScroll"
+    @scrollToEnd="searchMore"
+    ref="suggest"
+  >
     <ul class="suggest-list">
       <li class="suggest-item" @click="selectItem(item)" v-for="(item, index) of result" :key="index">
         <div class="icon">
@@ -66,9 +73,12 @@ export default {
       this.hasMore = true
       getSearch(this.query, this.page, this.showSinger, perpage).then((res) => {
         console.log(res)
-        // if (res.code === ERR_OK) {
-
-        // }
+        if (res.code === ERR_OK) {
+          this.zhida = res.data.zhida
+          this.firstList = res.data.song.list
+          this.searchSongs = this._normalizeSongs(res.data.song.list)
+          this._checkMore(res.data.song)
+        }
       })
     },
     searchMore() {
@@ -78,6 +88,11 @@ export default {
       this.page++
       getSearch(this.query, this.page, this.showSinger, perpage).then((res) => {
         console.log(res)
+        if (res.code === ERR_OK) {
+          // 把下一页数据，拼接上原页面数据
+          this.searchSongs = this._normalizeSongs(this.firstList.concat(res.data.song.list))
+          this._checkMore(res.data.song)
+        }
       })
     },
     getIconCls(item) {

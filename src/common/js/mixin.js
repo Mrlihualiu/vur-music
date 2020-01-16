@@ -8,17 +8,17 @@ import { shuffle } from 'common/js/util'
 export const playlistMixin = {
   computed: {
     ...mapGetters([
-      'playlist'
+      'playList'
     ])
   },
   mounted() {
-    this.handlePlaylist(this.playlist)
+    this.handlePlaylist(this.playList)
   },
   activated() { // <keep-alive>组件切换过来会触发activated
-    this.handlePlaylist(this.playlist)
+    this.handlePlaylist(this.playList)
   },
   watch: {
-    playlist(newVal) {
+    playList(newVal) {
       this.handlePlaylist(newVal)
     }
   },
@@ -37,7 +37,7 @@ export const playerMixin = {
     ...mapGetters([
       'sequenceList',
       'currentSong',
-      'playlist',
+      'playList',
       'mode',
       'favoriteList'
     ])

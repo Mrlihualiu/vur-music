@@ -52,7 +52,7 @@ export function createSong(musicData, vkey) {
     album: musicData.album ? musicData.album.name : musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album ? musicData.album.mid : musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://ws.stream.qqmusic.qq.com/C400${musicData.mid}.m4a?vkey=${vkey}&guid=${guid}&uin=${uin}&fromtag=66`
+    url: `http://ws.stream.qqmusic.qq.com/C400${musicData.mid ? musicData.mid : musicData.songmid}.m4a?vkey=${vkey}&guid=${guid}&uin=${uin}&fromtag=66`
   })
 }
 

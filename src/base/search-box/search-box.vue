@@ -61,6 +61,8 @@ export default {
     line-height: 18px
     background: $color-highlight-background
     color: $color-text
+    border 0
+    outline none
     font-size: $font-size-medium
     &::placeholder
       color: $color-text-d

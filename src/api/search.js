@@ -15,7 +15,7 @@ export function getHotKey() {
 
 // 搜索结果数据
 export function getSearch(query, page, zhida, perpage) {
-  const url = '/apiGetSearch'
+  const url = './apiGetSearch'
   const data = Object.assign({}, commonParams, {
     w: query,
     p: page,

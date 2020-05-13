@@ -47,6 +47,7 @@ export function saveSearch(query) {
   return searches
 }
 
+// 删除搜索记录
 export function deleteSearch(query) {
   let searches = storage.get(SEARCH_KEY, [])
 
@@ -58,6 +59,7 @@ export function deleteSearch(query) {
   return searches
 }
 
+// 清除搜索记录
 export function clearSearch() {
   storage.remove(SEARCH_KEY)
   return []
@@ -68,6 +70,7 @@ export function loadSearch() {
   return storage.get(SEARCH_KEY, [])
 }
 
+// 保存歌曲
 export function savePlay(song) {
   let songs = storage.get(PLAY_KEY, [])
 
@@ -79,10 +82,12 @@ export function savePlay(song) {
   return songs
 }
 
+// 加载歌曲
 export function loadPlay() {
   return storage.get(PLAY_KEY, [])
 }
 
+// 保存最爱歌曲
 export function saveFavorite(song) {
   let songs = storage.get(FAVORITE_KEY, [])
 
@@ -94,6 +99,7 @@ export function saveFavorite(song) {
   return songs
 }
 
+// 删除喜爱歌曲
 export function deleteFavorite(song) {
   let songs = storage.get(FAVORITE_KEY, [])
 
@@ -105,6 +111,7 @@ export function deleteFavorite(song) {
   return songs
 }
 
+// 加载最爱的歌曲
 export function loadFavorite() {
   return storage.get(FAVORITE_KEY, [])
 }
